@@ -1,0 +1,420 @@
+\section{Stationary phase in one dimension}
+The aim of the method of stationary phase is to determine the behavior of oscillatory integrals like
+\begin{equation}
+\label{oscillatory_1}
+I(\lambda) = \int_a^b e^{i\lambda\phi(x)} \psi(x)
+\end{equation}
+when $\lambda$ grows large. Here, $\phi(x)$ is a real valued smooth function, and $\psi(x)$ is a complex valued smooth function.
+
+For some context and intuition, as well as a review of some properties that will be used heavily later in the paper, let us start with an example.
+
+\subsection{Schr{\"o}dinger equation in one dimension}
+
+The quantum theory of the motion of a particle is described by a wave function. In one dimension, the particle can only exist on a line, and the wave function describes the probability of finding the particle at a point on that line at a particular time. Let us call this wave function $u(x, t)$, where $x$ is the position on the line and $t$ is time. For $u$ to properly describe the particle, it must satisfy some properties. Most notably,
+
+\begin{enumerate}
+	\item $u$ must be in $L^2(-\infty, \infty)$.
+	\item $u$ must satisfy the Schr{\"o}dinger equation.
+\end{enumerate}
+
+\begin{definition}
+	$L^2(-\infty, \infty)$ is the class of all functions $f : \R \to \C$ that are square integrable:
+	\[
+	\infint \abs{f(x)}^2 dx < \infty
+	\]
+\end{definition}
+\begin{definition}
+	A function $u : \R \times \R \to \C$ satisfies the Schr{\"o}dinger equation if
+	\[
+	i\partial_t u(x, t) - \frac{1}{2}\partial_{xx}u(x, t) = 0 
+	\]
+\end{definition}\cite{Strichartz}
+
+One way we can learn more about these wave functions is with the Fourier transform.
+
+\begin{definition}
+	Given a complex valued function $f$ of a real variable, define the Fourier transform of $f$:
+	\[
+	\FT{f(x)} = \hat{f}(\xi) = \infint f(x)e^{-ix\xi}dx
+	\]
+	and the inverse Fourier transform of $f$:
+	\[
+	\IFT{f(\xi)} = \check{f}(x) = \frac{1}{2\pi}\infint f(\xi)e^{ix\xi}d\xi
+	\]
+\end{definition}
+Two common properties of the Fourier transform are the Fourier inversion formula,
+\[
+\IFT{\FT{f}} = f, \; \FT{\IFT{f}} = f,
+\]
+and Plancherel's formula,
+\[
+\infint \abs{f(x)}^2 dx = \frac{1}{2\pi} \infint \abs{\hat{f}(\xi)}^2 d\xi.
+\]
+Now, we have to be careful since not all complex valued functions satisfy the Fourier inversion formula. We need some restrictions, namely that $f$ is both smooth and rapidly decreasing.
+\begin{definition}
+	A function $f$ is in $C^k$ if $f, f', f'', f^{(k)}$ are continuous functions. If $f$ has continuous derivatives of all orders, $f \in C^\infty$ and we call $f$ smooth.
+\end{definition}
+\begin{definition}
+	A function $f$ is rapidly decreasing if decays after multiplication with any polynomial.
+	That is, $f$ is rapidly decreasing if there are constants $M_n$ such that
+	\[
+		\abs{f(x)} \leq M_n \abs{x}^{-N}
+	\]
+	for all $N = 1, 2, 3, ...$.
+\end{definition}
+Some properties of the Fourier transform which will be useful along the way are:
+\begin{enumerate}
+	\item \label{linear} $\mathcal{F}, \mathcal{F}^{-1}$ are linear operators.
+	\item \label{derivatives} $\FT{f^{(n)}(x)} = (-i\xi)^n \FT{f}$.
+	\item \label{convolution} $\FT{f \ast g} = \sqrt{2\pi}\hat{f}\hat{g}, \; \IFT{fg} = \frac{1}{\sqrt{2\pi}}\check{f}\ast\check{g}$.
+\end{enumerate}
+Here $f \ast g$ is the convolution of $f$ and $g$.
+
+\begin{definition} If $f$ and $g$ are functions $\R \to \C$, then the convolution of $f$ and $g$ is defined by
+	\[
+		f \ast g = \infint f(x-y)g(y)dy
+	\]
+\end{definition}
+Two immediate properties of convolutions are that $f \ast g = g \ast f$ and that \newline $\partial_x(f \ast g)(x) = \frac{\partial f}{\partial x} \ast g = f \ast \frac{\partial g}{\partial x}$.
+\\
+
+Now, let us return to the Schr{\"o}dinger equation. We know that
+\[
+	i\partial_t(x, t) - \frac{1}{2}\partial_{xx} u(x, t) = 0.
+\]
+We can assume for now that $u$ is smooth and rapidly decreasing, and if we find results which break these assumptions we will discard them. With these assumptions, we can take the Fourier transform of both sides, and utilize properties \ref{linear} and \ref{derivatives} above to find
+\[
+	i\partial_t\hat{u}(\xi, t) - \frac{1}{2}\xi^2\hat{u}(\xi, t) = 0.
+\]
+This is just an ordinary differential equation in the variable $t$ and it is solved by
+\[
+	\hat{u}(\xi, t) = Ce^{\frac{1}{2}\xi^2t}
+\]
+for some constant $C$. If we know the initial state of the system, then we can determine $C$. That is, if $u(x, 0) = u_0(x)$, then
+\[
+	\hat{u}(\xi, 0) = Ce^{i\frac{1}{2}\xi^2\cdot 0} = \hat{u_0}(\xi)
+\]
+which implies that $C = \hat{u_0}(\xi)$. So we have
+\[
+	\hat{u}(\xi, t) = \hat{u_0}(\xi)e^{\frac{i}{2}\xi^2t}.
+\]
+Then we can find $u$ by using the inverse Fourier transform along with property \ref{convolution}. We find that
+\[
+	u(x, t) = u_0(x) \ast \IFT{e^{\frac{i}{2}\xi^2 t}}.
+\]
+
+To do this inverse Fourier transform we start by giving it a name, and then writing down the integral as
+\[
+	K(x, t) = \frac{1}{2\pi} \infint e^{\frac{i}{2}\xi^2 t}e^{ix\xi}d\xi.
+\]
+We first complete the square with $\xi^2 + 2\frac{x}{t}\xi = (\xi + \frac{x}{t})^2 - \frac{x^2}{t^2}$ to get
+\[
+K(x, t) = e^{-\frac{i}{2}\frac{x^2}{t^2}} \frac{1}{2\pi} \infint e^{\frac{it}{2}(\xi + \frac{x}{t})^2}d\xi,
+\]
+and then make a change of variables $\xi + \frac{x}{t} \mapsto \zeta$ so that we have
+\begin{equation}
+\label{Kofxt}
+K(x, t) = e^{-i\frac{x^2}{2t^2}} \frac{1}{2\pi} \infint e^{\frac{i}{2}\zeta^2 t}d\zeta.
+\end{equation}
+We are now left to compute $\infint e^{i\frac{\zeta^2}{2}t}d\zeta$, which is an oscillatory integral of the form \ref{oscillatory_1}, where $\phi(x)$ is $\frac{1}{2}x^2$, and $\lambda$ is $t$. 
+This particular oscillatory integral can be computed explicitly. The integral of a complex Gaussian $\int e^{-px^2}dx = \sqrt{\frac{\pi}{p}}$ so long as $\Re{(p)} > 0$. So if we take a positive decreasing sequence $\{a_n\}$ where $\lim_{n\to\infty} a_n = 0$, then for each $n$, $\int e^{-(a_n - i)x^2}dx = \sqrt{\frac{\pi}{a_n + i}}$, and since the real numbers are dense, $\lim_{n\to\infty}\int e^{-(a_n - i)x^2}dx = \int e^{ix^2} = \sqrt{-i\pi}$. In our case, 
+\[
+\infint e^{\frac{it}{2}\zeta^2}d\zeta = \sqrt{\frac{2\pi i}{t}},
+\]
+so that
+\begin{equation}
+K(x, t) = \frac{e^{\frac{i\pi}{4}}}{\sqrt{2\pi}}e^{-i\frac{x^2}{2t^2}}t^{-\frac{1}{2}}.
+\end{equation}
+We can also approximate this integral with the method of stationary phase, and examine how close to the solution we are.
+For consistency, let us compute this integral in terms of $x$ and $\lambda$, and we will substitute back for $t$ at the end.
+
+\subsubsection{Stationary phase for $\phi(x) = \frac{x^2}{2}$}
+The first step is to isolate the critical points of $\phi$. The critical points are the $x$ such that $\phi(x) = \phi'(x) = \ldots = \phi^{(k-1)}(x) = 0$ with $\phi^{(k)} \neq 0$. The value of $k$ is called the order of the critical point. In our case, we see that $\phi$ has a critical point at $x = 0$ with order $2$.
+We can isolate this critical point with a pair of smooth functions, one with compact support surrounding the critical point.
+
+\begin{definition}
+	A function $f$ has compact support if it is zero outside of a compact set.
+\end{definition}
+
+Let us define $\psi$ and $\tilde{\psi}$ as two smooth functions such that
+\begin{gather}
+\psi(x) = \begin{cases}
+1 & \abs{x} \leq 1 \\
+0 & \abs{x} > 2 \\
+\end{cases} \notag\\
+\tilde{\psi}(x) = 1 - \psi(x). \notag
+\end{gather}
+Now, it would be fair to question whether a pair of functions even exists, and while we will not prove that here, we can look at an example to build our confidence in declaring that such functions to exist.
+Consider the function 
+\[
+f(x) = \begin{cases}
+e^{\sfrac{-1}{x^2}} & x > 0 \\
+0 & x \leq 0.
+\end{cases}
+\]
+Here $f$ has continuous derivatives of all orders since 
+\[
+\bigg(\frac{d}{dx}\bigg)^k e^{\sfrac{-1}{x^2}} = \frac{P(x)}{Q(x)}e^{\sfrac{-1}{x^2}}
+\]
+where $P(x)$ and $Q(x)$ are polynomials, and this goes to 0 as $x \to 0$ since the decaying exponential beats the pole of $\frac{1}{Q(x)}$.
+Then if we define
+\[
+g(x) = f(x)f(1-x),
+\]
+the chain rule tells us that $g$ also has continuous derivatives of all orders, and it clearly has compact support since $g(x) = 0$ for $\abs{x} > 1$. The function $g$ is sketched in Figure \ref{fig:bump}.
+\begin{figure}
+	\includegraphics[width=0.75\textwidth, trim = 0 75 0 75]{../data/chart1.pdf}
+	\caption{\label{fig:bump} $g(x) = f(x)*f(1-x)$}
+\end{figure}
+Once we have a single smooth compactly supported function, we can use it to create others.
+\begin{enumerate}
+	\item We can shift: $g(x + x_0)$ \\
+	\item We can scale vertically: $ag(x)$ \\
+	\item We can scale horizontally: $g(ax)$ \\
+	\item We can take linear combinations: $a_1 g_1(x) + a_2 g_2(x) + \ldots$\\
+\end{enumerate}
+An example of a linear combination of these bumps is shown in Figure \ref{fig:pbump6}.
+\begin{figure}
+	\includegraphics[width=0.75\textwidth, trim = 0 75 0 75]{../data/chart2.pdf}
+	\caption{\label{fig:pbump6} $\sum_{k=-6}^6 g(x + \frac{k}{N} + \frac{1}{2})$}
+\end{figure}
+Taking partial sums like this, we can see this quickly converges to something very easy to use. Figure \ref{fig:pbump24} shows the normalized 24th partial sum, and resembles the $\psi$ we are looking for.
+\begin{figure}
+	\includegraphics[width=0.75\textwidth, trim = 0 75 0 75]{../data/chart3.pdf}
+	\caption{\label{fig:pbump24} $ \frac{\sum_{k=-24}^{24} g(x + \frac{k}{N} + \frac{1}{2})}{\sum_{k=-24}^{24} g(\frac{k}{N} + \frac{1}{2})} \approx \psi(x), \quad \tilde{\psi}(x) = 1 - \psi(x)$}
+\end{figure}
+
+Returning to the Schr{\"o}dinger equation, we confidently state $1 = \psi(x) + \tilde{\psi}(x)$ and split the integral in two:
+\[
+I(\lambda) = \infint e^{i\lambda\frac{x^2}{2}}dx = \infint e^{\frac{i}{2}x^2\lambda}\psi(x)dx + \infint e^{\frac{i}{2}x^2\lambda}\tilde{\psi}(x)dx
+\]
+In the right integral, the phase has no critical points in the support (the nonzero section) of the integrand, so we can integrate by parts repeatedly to reduce this to a large negative power of $\lambda$. We do this by splitting the integral into
+\[
+\int_{-\infty}^{-1} e^{\frac{i}{2}x^2\lambda}\tilde{\psi_1}dx + \int_1^\infty e^{\frac{i}{2}x^2\lambda}\tilde{\psi_2}dx
+\]
+where $\tilde{\psi}_1(-1) = \tilde{\psi_2}(1) =  0$. Then since $\frac{d}{dx} e^{\frac{i}{2}x^2\lambda} = i\lambda xe^{\frac{i}{2}x^2\lambda},$
+\begin{align}
+\notag \int_1^\infty e^{\frac{i}{2}x^2\lambda}\tilde{\psi_2}dx &= \int_1^\infty \frac{d}{dx} e^{\frac{i}{2}x^2\lambda} \frac{\tilde{\psi_2}}{i\lambda x}dx 
+= -\int_1^\infty e^{\frac{i}{2}x^2\lambda}\frac{d}{dx} \bigg(\frac{\tilde{\psi_2}}{i\lambda x}\bigg)dx,
+\end{align}
+since the boundary term of $e^{\frac{i}{2}x^2\lambda}\frac{\tilde{\psi_2}}{i\lambda x}dx\big|_1^\infty$ is $0$. The same follows for $-\infty \to -1$ integral, so that we have
+\[
+\infint e^{\frac{i}{2}x^2\lambda}\tilde{\psi}dx = -\infint e^{\frac{i}{2}x^2\lambda}\frac{d}{dx}\bigg(\frac{\tilde{\psi}}{i\lambda x}\bigg)dx.
+\]
+This inspires us to define the differential operator $Df(x) = \frac{1}{i\lambda x}\frac{d}{dx}f(x)$ whose adjoint is $D^*f(x) = -\frac{d}{dx}(\frac{f(x)}{i\lambda x})$ in the inner product space defined by $\ip{f}{g} = \infint f(x)\overline{g(x)}dx$. Then since $De^{\frac{i}{2}x^2\lambda} = e^{\frac{i}{2}x^2\lambda}$, we find
+\[
+\ip{e^{\frac{i}{2}x^2\lambda}}{\tilde{\psi}} = \ip{D^Ne^{\frac{i}{2}x^2\lambda}}{\tilde{\psi}} = \ip{e^{\frac{i}{2}x^2\lambda}}{{D^*}^N\tilde{\psi}}.
+\]
+Explicitly computing ${D^*}^N\tilde{\psi} = \sfrac{1}{(i\lambda)^N}\frac{d}{dx}(\frac{1}{x}\frac{d}{dx}( \ldots \frac{\tilde{\psi}}{x}))$ will get unwieldy very quickly, but each term will have at least one $\frac{1}{x}$, so we can put an upper bound on the integral
+\[
+\bigabs{\int_{-R}^R e^{\frac{i}{2}x^2\lambda}{D^*}^N\tilde{\psi}} \leq 2R\frac{1}{\lambda^N}\frac{1}{R}.
+\]
+As $R \to \infty$, we see that 
+\[
+\abs{\ip{e^{\frac{i}{2}x^2\lambda}}{\tilde{\psi}}} = \abs{\ip{e^{\frac{i}{2}x^2\lambda}}{{D^*}^N\tilde{\psi}}} \leq \lambda^{-N},
+\]
+and moreover this is true for any $N$, so this term is essentially $\lambda^{-\infty}$.
+
+What we have just shown is called the localization property.
+\begin{lemma}[Localization]
+	If $\phi(x)$ has no critical points on the region $(a, b)$, then
+	\[
+	\int_a^b e^{i\lambda\phi(x)} = O (\lambda^{-N})
+	\]
+	for any positive integer $N$.
+	\label{lemma_localization}
+\end{lemma}
+The only meaningful contribution to the integral then comes from a small region of support surrounding the critical points of the phase. We are now left to find
+\[
+\infint e^{\frac{i}{2}\lambda x^2}\psi(x)dx.
+\]
+To do this, we can multiply and divide the integrand by a Gaussian to get a handle on the decay. The integrand becomes
+\[
+e^{\frac{i}{2}\lambda\phi(x)}e^{-x^2}\psi(x)e^{x^2},
+\]
+and since $\psi(x)$ is compactly supported, $\psi(x)e^{x^2}$ is likewise. We take the Maclaurin series
+\[
+\psi(x)e^{x^2} = \sum_{k=0}^Na_kx^k + x^{N+1}R_N(x),
+\]
+which leads us to compute
+\[
+\sum_{k=0}^Na_k \infint e^{\frac{i}{2}\lambda x^2} e^{-x^2} x^kdx + \infint  e^{\frac{i}{2}\lambda x^2} e^{-x^2}x^{N+1}R_N(x)dx.
+\]
+We can gather the terms $e^{-x^2}R_N(x)$ into a single term $\eta(x)$ which is compactly supported in the same interval as $\psi(x)$. We have to again break down the interval with smooth functions, but will do it with more control this time. It might seem redundant to break down the support of $\psi$ into two smaller regions of support. After all, why not just define $\psi$ with $\psi(x) = 0$ for $x \geq 2\epsilon$ in the first place? Well, suppose we did that. Suppose we had defined
+\begin{gather}
+\psi(x) = \begin{cases}
+1 & \abs{x} \leq \epsilon \\
+0 & \abs{x} > 2\epsilon \\
+\end{cases} \notag\\
+\tilde{\psi}(x) = 1 - \psi(x). \notag
+\end{gather}
+Proceeding as above we would like to say that $\infint e^{\frac{i}{2}\lambda x^2}\tilde{\psi(x)}dx$ is $O(\lambda^{-\infty})$, but we cannot since $D^*{\tilde{\psi}} = O(\frac{1}{x})$, and as $\epsilon \to 0$, $\frac{1}{x}$ grows unchecked.  What we have to do instead is balance the growth of $\frac{1}{\epsilon}$ with the decay of $\lambda^{-1}$.
+
+We can do this by breaking the interval $(-1, 1)$ into two intervals with the smooth functions
+\begin{gather}
+\alpha_\epsilon(x) = \begin{cases}
+1 & \abs{x} \leq \epsilon \\
+0 & \abs{x} > 2\epsilon \\
+\end{cases} \notag\\
+\tilde{\alpha_\epsilon}(x) = 1 - \alpha_\epsilon, \notag
+\end{gather}
+and writing
+\[
+\infint  e^{\frac{i}{2}\lambda x^2} x^{N+1} \eta(x)\alpha_\epsilon(x)dx + \infint  e^{\frac{i}{2}\lambda x^2} x^{N+1} \eta(x)(1-\alpha_\epsilon(x))dx.
+\]
+The left integral can be easily bounded:
+\[
+\bigabs{\infint  e^{\frac{i}{2}\lambda x^2} x^{N+1} \eta(x)\alpha_\epsilon(x)dx} \leq \epsilon^{N+1}2\epsilon = C_\alpha \epsilon^{N+2}.
+\]
+For the right integral, we can use the same differential operator $Df(x) = \frac{1}{i\lambda x}\frac{d}{dx}f(x)$ with the relation $De^{\frac{i}{2}\lambda x^2} = e^{\frac{i}{2}\lambda x^2}$, and in integration by parts to write
+\begin{align}
+\notag \infint e^{\frac{i}{2}\lambda x^2}x^{N+1}\eta(x)(1-\alpha_\epsilon(x))dx &= \frac{1}{i\lambda}\infint \frac{d}{dx}e^{\frac{i}{2}\lambda x^2} x^{N+1}\eta(x)(1-\alpha_\epsilon(x))dx \\
+\notag &= \frac{-1}{i\lambda}\infint e^{\frac{i}{2}\lambda x^2}\frac{d}{dx}(x^{N+1}\eta(x)(1-\alpha_\epsilon(x)))dx.
+\end{align}
+The product rule then gives us
+\begin{gather}
+\label{term1} \frac{-1}{i\lambda}\infint e^{\frac{i}{2}\lambda x^2}x^{N-1}\eta(x)(1-\alpha_\epsilon(x))dx + \\
+\label{term2} \frac{-1}{i\lambda}\infint e^{\frac{i}{2}\lambda x^2}x^N\eta'(x)(1-\alpha_\epsilon(x))dx + \\
+\label{term3} \frac{-1}{i\lambda}\infint e^{\frac{i}{2}\lambda x^2}x^N\eta(x)(1-\alpha_\epsilon(x))dx.
+\end{gather}
+Each of these terms is nicer than what we had to start. There is no fear in taking derivatives of $\eta$ in \ref{term2} since $\eta$ and all its derivatives are bounded. In term \ref{term3}, we have $(1-\alpha_\epsilon)'$ which is zero except for the intervals $(-2\epsilon, -\epsilon), (\epsilon, 2\epsilon)$ where it is near $\frac{1}{\epsilon}$. 
+If we continue to integrate by parts $n$ times, we have several terms of the form
+\[
+(\frac{-1}{i\lambda})^n \infint x^{N+1-(n+l)}c_l dx
+\]
+where $l = 0, \ldots, n$.
+When $n > N+1$, each of these is bounded by
+\[
+(\frac{1}{2\lambda})^n \epsilon^{N+1-(n+l)}c_lc_\eta
+\]
+where $c_\eta$ is the size of the support of $\eta$. In this particular case, $c_\eta = 2\epsilon$.
+Now, the $l=n$ term will have come from the term with no derivatives on $(1-\alpha_\epsilon)$, so $c_n$ is not a function of $\epsilon$. On the other end, the $l=0$ term will have $n$ derivatives on $(1-\alpha_\epsilon)$, and $(1-\alpha_\epsilon)^{(n)} \leq \sfrac{1}{\epsilon^n}$. We can see then that each term is bounded above by some constant times
+$\lambda^{-n}\epsilon^{N+2-2n}$, so their sum is likewise bounded and
+\[
+\infint e^{\frac{i}{2}\lambda x^2}x^{N+1}\eta(x)(1-\alpha_\epsilon(x))dx \leq C_{\tilde{\alpha}}\lambda^{-n}\epsilon^{N+2-2n}.
+\]
+Together with the $\alpha$ integral, we have
+\[
+\infint  e^{i\lambda x^2} x^{N+1} \eta(x)dx \leq C_\alpha \epsilon^{N+2} + C_{\tilde{\alpha}}\lambda^{-n}\epsilon^{N+2-2n},
+\]
+and this is true for any $\epsilon$ in $(0, 1)$. We may then choose $\epsilon = \lambda^{-\frac{1}{2}}$, so that 
+\begin{equation}
+\label{error_x^N+1}
+\infint  e^{i\lambda x^2} x^{N+1} \eta(x)dx \leq C\lambda^{-(\frac{N}{2} + 1)}.
+\end{equation}
+So, by taking sufficiently many terms of the Taylor series of $\psi(x)e^{x^2}$, the remainder is arbitrarily small.
+
+With the boundary values and remainders sufficiently small, we are left with the main contribution to the integral which is the series
+\[
+\sum_{k=0}^Na_k \infint e^{i\lambda x^2} e^{-x^2} x^kdx,
+\]
+To compute the integrals $\infint e^{i\lambda x^2} e^{-x^2} x^kdx$, we first notice that if $k$ is odd, then the integrand is likewise odd and the integral is 0. If $k$ is even, we write
+\[
+2\int_0^\infty e^{-(1-\frac{i\lambda}{2})x^2}x^kdx.
+\]
+We can find this integral by changing the contour of integration. Specifically,
+the complex function $f(z) = e^{-z^2}(1-\frac{i\lambda}{2})^{-\frac{k}{2}}z^k$ is analytic at all points $z \in \C$.
+\begin{definition}
+	A function $f : \R \to \C$ is analytic at a point $z_0$ if it has a derivative at each point in some neighborhood of $z_0$.
+\end{definition}
+For each R, define the contours
+\begin{gather}
+\notag C_1(x) : (0, R) \to \C, \; x \mapsto \bp{1-\frac{i\lambda}{2}}^\frac{1}{2}x\\
+\notag C_2(x) : (0, R) \to \C, \; x \mapsto R - x\\
+\notag C_R : \text{arc of radius } \norm{\bp{1-\frac{i\lambda}{2}}^\frac{1}{2}} \text{ joining } C_1(R), C_2(R)
+\end{gather}
+(TODO: draw and insert diagram of this.)
+Since $f$ is analytic everywhere in $\C$, the Cauchy-Goursat theorem tells us that for each $R > 0$,
+\[
+\int_{C_1}f(z)dz + \int_{C_R}f(z)dz + \int_{C_2}f(z)dz = 0,
+\]
+so that
+\[
+\bp{1-\frac{i\lambda}{2}}^\frac{1}{2}\int_0^R e^{-(1-\frac{i\lambda}{2})x^2}x^kdx - \int_0^R e^{-x^2}x^k\bp{1-\frac{i\lambda}{2}}^{-\frac{k}{2}}dx = \int_{C_R}f(z)dz.
+\]
+Now, on $C_R$, $\abs{f(z)} \leq \frac{1}{\abs{\frac{\lambda}{2} - 1}^\frac{k}{2}}R^k\abs{e^{-z^2}}$. Since the phase of $C_R$ is in the range $\theta \in (-\pi/4, 0]$, $\cos(2\theta) > 0$. Then since $\abs{e^{-z^2}} = e^{-\Re(z^2)} = e^{-R^2\cos(2\theta)}$, this implies that $\abs{e^{-z^2}} \leq e^{-CR^2}$ for some $C > 0$.
+This allows us to bound the integral
+\[
+\bigabs{\int_{C_R}f(z)dz} \leq \frac{\pi}{2}R\frac{1}{\abs{\frac{\lambda}{2} - 1}^\frac{k}{2}}R^ke^{-CR^2} \to 0 \text{ as } R \to \infty
+\]
+because of the rapid decay of the Gaussian. This implies that
+\[
+\lim_{R\to\infty} \bp{1-\frac{i\lambda}{2}}^\frac{1}{2}\int_0^R e^{-(1-\frac{i\lambda}{2})x^2}x^kdx = \lim_{R\to\infty} \int_0^R e^{-x^2}x^k\bp{1-\frac{i\lambda}{2}}^{-\frac{k}{2}}dx,
+\]
+so we may change contours and instead find
+\[
+\bp{1-\frac{i\lambda}{2}}^{-\frac{k}{2}}\int_0^\infty e^{-x^2}x^kdx.
+\]
+This integral we can integrate by parts $k/2$ times:
+\[
+\int_0^\infty e^{-x^2}x^kdx = - \int_0^\infty \frac{1}{2}e^{-x^2}x^{k-2}dx = \ldots = \bp{-\frac{1}{2}}^\frac{k}{2}\int_0^\infty e^{-x^2}dx
+\]
+since the boundary terms are 0. This last integral is just the integral of a Gaussian, and has value $\frac{\sqrt{\pi}}{2}$, so that
+\[
+\bp{1-\frac{i\lambda}{2}}^\frac{1}{2}\int_0^\infty e^{-(1-\frac{i\lambda}{2})x^2}x^kdx = \bp{1-\frac{i\lambda}{2}}^{-\frac{k}{2}}\bp{-\frac{1}{2}}^\frac{k}{2}\frac{\sqrt{\pi}}{2}.
+\]
+This then implies that each of the integrals 
+\begin{align}
+\notag \infint e^{-(1-\frac{i\lambda}{2})x^2}x^kdx &= \bp{1-\frac{i\lambda}{2}}^{-\frac{k+1}{2}}\bp{-\frac{1}{2}}^\frac{k}{2}\sqrt{\pi}\\
+\notag &= \bp{\frac{\lambda}{2}}^{-\frac{k+1}{2}}\bp{\frac{\lambda}{2}^{-1} - i}^{-\frac{k+1}{2}}\bp{-\frac{1}{2}}^\frac{k}{2}\sqrt{\pi}.
+\end{align}
+To get this in terms of powers of $\lambda$, we can take the power series of $(z-i)^{-\frac{k+1}{2}}$ evaluated at $\frac{\lambda}{2}^{-1}$. That is, if $g(z) = (z-i)^{-\frac{k+1}{2}}$, then
+\[
+g(z) = \sum_{j=0}^\infty \frac{g^{(j)}(0)}{j!}z^k
+\]
+and
+\[
+\bp{\frac{\lambda}{2}^{-1} - i}^{-\frac{k+1}{2}} = \sum_{j=0}^\infty c_j(k)\bp{\frac{\lambda}{2}}^{-j}
+\]
+for some constants $c_j$ that depend on $k$.
+So, the main contribution to the integral is 
+\begin{equation}
+\label{sp_x^2/2}
+I(\lambda) = \infint e^{it\frac{x^2}{2}}dx \approx \sqrt{\pi}\sum_{k=0}^N a_k\bp{\frac{\lambda}{2}}^{-\frac{k+1}{2}}\bp{-\frac{1}{2}}^\frac{k}{2}\sum_{j=0}^\infty c_j(k)\bp{\frac{\lambda}{2}}^{-j}.
+\end{equation}
+Often we are only concerned with the leading term, which in this case is
+\begin{equation}
+\label{eqn:schrodinger1term}
+I(\lambda) = \infint e^{it\frac{x^2}{2}}dx \approx \sqrt{2\pi}e^{i\frac{\pi}{4}}\lambda^{-\frac{1}{2}}.
+\end{equation}
+Changing variables back to $x$ and $t$ from equation \ref{Kofxt}, and assuming $t >> 1$ so that the remainder is small, we have
+\begin{equation}
+K(x, t) \approx \frac{1}{\sqrt{\pi}}e^{-i\frac{x^2}{2t^2}}t^{-\frac{1}{2}}\sum_{k=0}^Na_k\bp{-t}^{-\frac{k}{2}}\sum_{j=0}^\infty c_j(k)\bp{\frac{t}{2}}^{-j}.
+\end{equation}
+Now we must ask what we can learn from this expansion. First, we notice that this kernel behaves asymptotically like some series
+\[
+t^{-\frac{1}{2}} + t^{-1} + t^{-\frac{3}{2}} + \ldots,
+\]
+so that as time progresses, the kernel decays. To illustrate this, let us consider an example. Suppose we have localized a particle, so that we know its position exactly. This corresponds to the initial condition $u_0(x) = \delta(x)$, the Dirac delta centered at $0$. Then since the Dirac delta is the identity operator with respect to convolution, $u(x, t) = K(x, t)$. 
+
+To understand the behavior of the solution, we can examine the graph, but first we have to ask if our approximation is accurate enough to learn anything from the graph. The error in our approximation is bounded by $Ct^{-(\frac{N}{2}+1)}$, so if we want to know what is happening immediately at time $t=0$, we will have to increase $N$, which requires computation of derivatives. Not impossible, but tedious. Alternatively, if we are interested in the behavior of our solution in general, we can look at points where time is larger, and the burden of computing derivatives is significantly reduced. Let us take the second path, and examine the solution at times only greater than 10. How many terms to include is an area where there remains design space. Since we are only admiring the solution from afar and not building a particle accelerator, we can settle for a very reasonable error like $10^{-2}$. Since the error is $t^(\frac{N}{2}+1)$ where $N+1$ is the number of terms in the series, this can be achieved by $N=1$, which can be computed by
+\[
+\frac{1}{\sqrt{\pi}}e^{-i\frac{x^2}{2t^2}}t^{-\frac{1}{2}}\sum_{k=0}^2a_k\bp{-t}^{-\frac{k}{2}}\sum_{j=0}^{N(k)} c_j(k)\bp{\frac{t}{2}}^{-j}.
+\]
+Here, we write $N(k)$ in place of $\infty$ in the second sum because the number of terms required to maintain the goal of accuracy decreases as $k$ increases.
+The coefficients $a_k$ are from the MacLaurin series of $\psi(x)e^{x^2}$, and are fairly easy to compute, since $\psi^{(k)}(0) = 0$ for $k > 0$. We find $a_0 = 1$, $a_1 = 0$, $a_2 = 2$. 
+The $c_j$ are the coefficients of the power series of $(z-i)^{-\frac{k+1}{2}}$ about 0. For $a_0$, we will find $c_0(0) = (-i)^{-\frac{1}{2}} = e^{i\frac{\pi}{4}}$ and $c_1(0) = -\frac{1}{2}(-i)^{-\frac{3}{2}}= -\frac{1}{2}e^{-i\frac{3\pi}{4}}$, but since $c_2(0)$ has $t^{-\frac{5}{2}}$, we may stop here. For $a_2$, we need only compute $c_0(2) = e^{i\frac{3\pi}{4}}$. After doing some arithmetic, we have 
+\[
+u(x, t) \approx \frac{1}{\sqrt{\pi}}e^{-i\frac{x^2}{2t^2}}(e^{i\frac{\pi}{4}}t^{-\frac{1}{2}} + e^{i\frac{3\pi}{4}}t^{-\frac{3}{2}}).
+\]
+\begin{figure}
+	\includegraphics[width=1\textwidth, trim = 0 75 0 75]{../data/schrodinger_updated.pdf}
+	\caption{\label{fig:schrodinger} $\Re\{u(x, t)\}$ for $t = 10, 15, 20$ when $u_0 = \delta$}
+\end{figure}
+\begin{figure}
+	\includegraphics[width=1\textwidth, trim = 0 75 0 75]{../data/schrodinger1.pdf}
+	\caption{\label{fig:schrodinger1} $\Re\{u(x, t)\}$ for $t = 50, 75, 100$ when $u_0 = \delta$}
+\end{figure}
+We can see from the graph of $u$ in Figure \ref{fig:schrodinger} that even though we had completely localized initial data, after a short time the wave function disperses away from the point of localization. As seen in Figure \ref{fig:schrodinger}, after a long time the wave function nearly flattens.
+We have been careful not to say that $u(x, t)$ describes the position of the particle, because it does not. It describes the state of the particle, from which can be determined location, momentum, and energy. The location of the particle is determined by the probability density function $\abs{u(x, t)}^2$.
+When we compute $\abs{u(x, t)}^2$, we see that the complex exponential cancel out and we are left with something like
+\[
+\abs{u(x, t)}^2 = \frac{1}{\pi}(t^{-1} + t^{-3}),
+\]
+which is not a function of $x$! This is not a result of any approximation we made by truncating the series, but a result of the initial data being the Dirac delta, because this is a manifestation of the uncertainty principle. Since our initial data completely determines position, the uncertainty in momentum is unbounded, so that after even the shortest amount of time, the particle could be anywhere!
+
+One final question we may ask is what $t$ must be for a single term to be a good approximation for the solution. Since the error is $t^{-(\frac{N}{2}+1)}$, a single term has an error of $t^{-1}$. So, for $t > 100$, 
+\begin{equation}
+K(x, t) \approx \frac{e^{i\frac{\pi}{4}}}{\sqrt{\pi}}e^{-i\frac{x^2}{2t^2}}t^{-\frac{1}{2}},
+\end{equation}
+which is exactly what we got when we computed the integral explicitly! Furthermore, as time progresses, our estimate actually gets \textit{closer} to the solution, instead of further away like most multi-step numerical methods.

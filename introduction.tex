@@ -1,0 +1,38 @@
+\section{Introduction}
+The method of stationary phase is a technique for approximating highly oscillatory integrals. These are integrals that look like
+\begin{equation}
+\label{oscillatory}
+I(\lambda) = \int_a^b e^{i\lambda\phi(x)} \psi(x)
+\end{equation}
+where $\phi(x)$ is a real valued, smooth function (the phase), $\psi(x)$ is a complex valued, smooth function, and $\lambda$ is a large constant.
+For these integrals, if the phase has no critical points ($\phi'(x) \neq 0$ for $x \in (a, b)$) then the integral decays extremely rapidly, on the order of $\lambda^{-\infty}$. This means that the contributions to the integral come from small neighborhoods of these critical points.
+The size of the contributions depends only on $\lambda$ and the order of the critical point, and not on the behavior of $\psi$ in the neighborhood. In the simplest case, if $x_0$ is a critical point of $\phi$ such that $\phi'(x_0) = 0$ and $\phi''(x_0) \neq 0$, then the integral decays on the order of $\lambda^{-\frac{1}{2}}$.
+
+This technique is effective on certain partial differential equations. Among those are equations of the form
+\[
+i\partial_t u(x, t) + P(D_x)u(x, t) = 0
+\]
+with some initial conditions $u(x, 0) = u_0(x)$ where $P$ is a polynomial of partial $x$ derivatives of $u$. 
+By taking a Fourier transform in the $x$ variable, this becomes
+\[
+i\partial_t \hat{u}(\xi, t) + P(\xi)\hat{u}(\xi, t) = 0.
+\]
+This is now just an ordinary differential equation, and $P$ is a polynomial in $\xi$, and the solution is
+\[
+\hat{u}(\xi, t) = \hat{u_0}(\xi)e^{iP(\xi)t}.
+\]
+Taking the inverse Fourier transform this becomes
+\[
+u(x, t) = K(x, t) \ast u_0
+\]
+where
+\[
+K(x, t) = \int e^{ix\xi}e^{itP(\xi)}d\xi.
+\]
+Now this is an oscillatory integral of the form of \ref{oscillatory}, where $\phi(\xi) = \frac{x}{t}\xi + P(\xi)$, $\lambda = t$, and $\psi = 1$. This integral can be approximated with the method of stationary phase.
+
+\subsection*{Notation}
+I denote a single spacial variable by $x$, and the corresponding Fourier variable by $\xi$. I write $\mathcal{F}\{f(x)\} = \hat{f}(\xi)$ to denote the single variable Fourier transform. For functions of multiple variables such as $u(x_0, \ldots, x_n)$, I
+ write $x_0$ as $t$ to represent the time dimension, and $(x_1, \ldots, x_n)$ as $\bx$ to represent the spacial dimensions. For the corresponding Fourier variables, I write $\bxi = (\xi_1, \ldots, \xi_n)$.
+  For the Fourier transform of $u(\bx, t)$ in the spacial variables, $\mathcal{F}_{\bx} \{u(\bx, t)\}$, I omit the subscript and write
+  $\mathcal{F}\{u(\bx, t)\} = \hat{u}(\bxi, t)$.

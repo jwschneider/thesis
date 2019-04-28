@@ -1,0 +1,99 @@
+\subsection{Korteweg-de Vries equation in one dimension}
+Next we will see to apply what we learned in approximating the Schr{\"o}dinger equation to the linearized Korteweg-de Vries (KdV) equation. 
+\begin{definition}
+	A function $u: \R \times \R \to \C$ satisfies the linearized KdV equation if
+	\[
+		\partial_tu(x, t) + \frac{1}{3}\partial_{xxx}u(x, t) = h
+	\]
+	for some smooth, compactly supported function $h$.
+\end{definition}
+The KdV equation describes the propagation of waves in a narrow channel with a shallow bottom.
+We will look first at the homogeneous equation where $h = 0$. As before, we can take the Fourier transform of this equation and find
+\[
+	\partial_t \hat{u}(\xi, t) = i\frac{\xi^3}{3} \hat{u}(\xi, t)
+\]
+using property \ref{derivatives} of the Fourier transform. Again, this is an ordinary differential equation in variable $t$, and is solved by
+\[
+	\hat{u}(\xi, t) = Ce^{i\frac{\xi^3}{3} t}.
+\]
+If we know the initial conditions of the wave, we can determine $C$. That is, if there is some function $u_0(x)$ with Fourier transform $\hat{u_0}$ such that $u(x, 0) = u_0(x)$, then
+\[
+	\hat{u}(\xi, 0) = C = \hat{u_0}(\xi)
+\]
+so that
+\begin{equation}
+\notag	\hat{u}(\xi, t) = \hat{u_0}(\xi)e^{i\frac{\xi^3}{3} t}.
+\end{equation}
+We can then take the inverse Fourier transform along with property \ref{convolution} to find
+\[
+	u(x, t) = K(x, t) \ast u_0(x)
+\]
+where
+\[
+	K(x, t) = \IFT{e^{i\frac{\xi^3}{3} t}} = \frac{1}{2\pi}\infint e^{i\frac{\xi^3}{3} t}e^{i\xi x}d\xi.
+\]
+Now we must compute $\infint e^{i(\frac{\xi^3}{3}t + x\xi)}d\xi$. Here the phase is $\phi(\xi) = \frac{\xi^3}{3}t + x\xi$, so $\phi'(\xi) = \xi^2t + x$. When $x >0$, this phase has no critical points, so the integral decays like $(xt)^{-N}$ for any integer $N$.
+When $x < 0$, the phase has a critical point at $\xi = \sqrt{\frac{\abs{x}}{t}}$. Let's call this point $\xi_0$.
+When we take the Taylor series of $\phi$ about $\xi_0$ the linear term vanishes, so that we are left with a quadratic phase, which we know how to deal with. That is,
+\begin{align}
+\phi(\xi) &= \phi_(\xi_0) + \frac{\phi''(\xi_0)}{2}(\xi - \xi_0)^2 + \frac{\phi''(\xi_0)}{6}(\xi - \xi_0)^3 \notag\\
+	&= -\frac{2}{3}\bp{\frac{\abs{x}^3}{t}}^\frac{1}{2} + (\abs{x}t)^\frac{1}{2}(\xi-\xi_0)^2 + \frac{t}{3}(\xi-\xi_0)^3 \notag
+\end{align}
+
+We can then write
+\[
+K(x, t) = \frac{1}{2\pi}e^{-i\frac{2}{3}\bp{\frac{\abs{x}^3}{t}}^\frac{1}{2}}\infint e^{i(\abs{x}t)^\frac{1}{2}(\xi-\xi_0)^2}e^{i\frac{t}{3}(\xi-\xi_0)^3}d\xi
+\]
+when $x > 0$. To find the asymptotic behavior of this integral, we first make a change of variable $\xi - \xi_0 \to \xi$ then isolate $\xi = 0$ with a bump function
+\[
+	\psi(\xi) = \begin{cases}
+	1 & \abs{\xi} < 1 \\ 0 & \abs{\xi} > 2
+	\end{cases}.
+\]
+We may do this since the contribution to the integral from the area outside of $\psi$ decays like $(xt)^{-N}$, so that 
+\[
+	K(x, t) = \frac{1}{2\pi}e^{-i\frac{2}{3}\bp{\frac{\abs{x}^3}{t}}^\frac{1}{2}} \infint e^{i(\abs{x}t)^\frac{1}{2}\xi^2}e^{i\frac{t}{3}\xi^3}\psi(\xi)d\xi.
+\]
+Next we recall equation \ref{error_x^N+1} which states $\abs{\infint  e^{i\lambda x^2} x^{N+1} \eta(x)dx} \leq C\lambda^{-(\frac{N}{2} + 1)}$.
+When we take the MacLaurin series of $f(\xi) = e^{i\frac{t}{3}\xi^3}$, since $f'(0) = f''(0) = 0$, we can estimate $f$ with the cubic polynomial
+\[
+	f(\xi) = 1 + i\frac{t}{3}\xi^3R(\xi)
+\]
+where $R(\xi)$ is a polynomial with $R(0) = 1$. Then if we call $\eta = R\cdot\psi$, then $\eta$ is still compactly supported, so that \ref{error_x^N+1} tells us
+\[
+	\bigabs{i\frac{t}{3}\infint e^{i(\abs{x}t)^\frac{1}{2}\xi^2}\xi^3\eta(\xi)d\xi} \leq \frac{t}{3}C(\abs{x}t)^{\frac{1}{2}(-\frac{1}{2}-\frac{3}{2})} = C\abs{x}^{-1}.
+\]
+
+This allows us to write
+\[
+	\infint e^{i(\abs{x}t)^\frac{1}{2}\xi^2}e^{i\frac{t}{3}\xi^3}\psi(\xi)d\xi = \infint e^{i(\abs{x}t)^\frac{1}{2}\xi^2}\psi(\xi)d\xi + C\abs{x}^{-1}.
+\]
+The remaining integral we know absolutely everything about! Using the asymptotic approximation of equation \ref{eqn:schrodinger1term}, we know
+\[
+	\infint e^{i(\abs{x}t)^\frac{1}{2}\xi^2}\psi(\xi)d\xi \approx \frac{e^{i\frac{\pi}{4}}}{\sqrt{\pi}}(\abs{x}t)^{-\frac{1}{4}},
+\]
+with a principal error of $\abs{x}^{-1}$. So we find that for $x$ negative with large absolute value, 
+
+\begin{equation}
+K(x, t) \approx \frac{e^{i\frac{\pi}{4}}}{2\pi^\frac{3}{2}}e^{-i\frac{2}{3}\bp{\frac{\abs{x}^3}{t}}^\frac{1}{2}}(\abs{x}t)^{-\frac{1}{4}},
+\end{equation}
+which oscillates like $x^\frac{3}{2}$ while decaying like $x^{-\frac{1}{4}}$.
+
+As $\abs{x} \to 0$ though, this approximation breaks down. Returning to
+\[
+	\infint e^{i(\abs{x}t)^\frac{1}{2}\xi^2}e^{i\frac{t}{3}\xi^3}\psi(\xi)d\xi,
+\]
+we can see that for small $\abs{x}$, $g(\xi) = e^{i(\abs{x}t)^\frac{1}{2}\xi^2}$ is nearly constant. That is, since the MacLaurin series of $g$ is $1 + i(\abs{x}t)^\frac{1}{2}\xi^2 R(\xi)$ for some other polynomial $R$ with $R(0) = 1$, as $\abs{x} \to 0$, $g \to 1$, so we write
+\[
+	\infint e^{i(\abs{x}t)^\frac{1}{2}\xi^2}e^{i\frac{t}{3}\xi^3}\psi(\xi)d\xi \approx \infint e^{i\frac{t}{3}\xi^3}\psi(\xi)d\xi
+\]
+for small $\abs{x}$. In similar fashion to the derivation which led to equation \ref{eqn:schrodinger1term} which states
+\[
+\infint e^{it\frac{x^2}{2}}\psi(x)dx \approx \sqrt{\pi}e^{i\frac{\pi}{4}}\bp{\frac{\lambda}{2}}^{-\frac{1}{2}},
+\]
+we may find that
+\[
+\infint e^{it\frac{x^3}{3}}\psi(x)dx \approx \sqrt{\pi}e^{i\frac{\pi}{4}}\bp{\frac{\lambda}{3}}^{-\frac{1}{3}}.
+\]
+
+

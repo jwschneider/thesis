@@ -1,0 +1,29 @@
+\subsection{Wave equation in several dimensions}
+A slightly more involved problem is the wave equation in several dimensions. The wave equation describes the motion of waves in classical mechanics. In one dimension, it can describe the motion of a wave traveling along a string; in two, it can describe the vibrating membrane of a drum; in three, Jello as it shakes, and etc. A function $u(x, t)$ which takes $\R^n \times \R \to \C$ satisfies the wave equation if
+\begin{equation}
+\frac{\partial^2}{\partial t^2}u(x, t) = \triangle u(x, t).
+\end{equation}
+To specify a unique solution to the wave equation, we must also know something about the initial state, so suppose we know
+\begin{gather}
+u(x, 0) = f(x) \notag \\ u_t(x, 0) = g(x). \notag
+\end{gather}
+To start, we take the Fourier transform of both sides of the wave equation. Then we have
+\[
+\hat{u}_{tt}(\xi, t) = - \abs{\xi}^2\hat{u}(\xi, t).
+\]
+This is an ordinary differential equation in $t$, and is solved by
+\[
+	\hat{u}(\xi, t) = c_1\cos(\abs{\xi}t) + c_2\sin(\abs{\xi}t)
+\]
+for some constants $c_1$ and $c_2$, which we can determine from the initial state:
+\[
+	\hat{u}(\xi, 0) = c_1 = \hat{f}(\xi)
+\]
+and
+\[
+	\hat{u}_t(\xi, 0) = c_2\abs{\xi} = \hat{g}(\xi),
+\]
+so that
+\[
+	\hat{u}(\xi, t) = \hat{f}(\xi)\cos(\abs{\xi}t) + \frac{\hat{g}(\xi)}{\abs{\xi}}\sin(\abs{\xi}t).
+\]

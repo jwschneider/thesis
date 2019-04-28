@@ -1,0 +1,50 @@
+\section{Stationary Phase in Higher Dimension}
+We now turn to the use of stationary phase in higher dimensions. We are still computing integrals
+\[
+I(\lambda) = \int_{\R^n} e^{i\lambda \phi(x)}\psi(x)dx,
+\]
+only now $x = (x_1, \ldots, x_n)$. The analogy of a critical point is a point where the gradient of the phase is zero. That is,
+\[
+(\bigtriangledown \phi)(x) = \bp{\frac{\partial\phi}{\partial x_1}, \ldots, \frac{\partial\phi}{\partial x_n}} = 0.
+\]
+In many cases, however, the computation of these integrals can be done using stationary phase in one dimension. One such case is the Schr{\"o}dinger equation.
+\subsection{Schr{\"o}dinger equation in several dimensions}
+A function $u(x, t)$ where $x \in \R^n$ and $t \in \R$ satisfies the Schr{\"o}dinger equation if
+\[
+	\partial_t u(x, t) - \frac{i}{2^n}\triangle_x u(x, t) = 0,
+\]
+where $\triangle$ is the Laplacian operator which acts on a function by $\triangle f(x) = (\frac{\partial^2 f}{\partial x_1^2} + \ldots + \frac{\partial^2 f}{\partial x_n^2})$. 
+The Fourier transform in several dimensions is very similar. For a smooth and compactly supported function $f(x)$ on $\R^n$, its Fourier transform is
+\[
+	\hat{f}(\xi) = \int_{\R^n}f(x)e^{-ix\cdot\xi}dx,
+\]
+and its inverse transform is
+\[
+	\check{f}(x) = \frac{1}{(2\pi)^n}\int_{\R^n}f(\xi)e^{ix\cdot\xi}d\xi.
+\]
+We may then take the Fourier transform of both sides of the Schr{\"o}dinger so that
+\[
+	\hat{u}_t(\xi, t) -\frac{i}{2^n}(-\xi_1^2 - \ldots -\xi_n^2)\hat{u}(\xi, t) = 0.
+\]
+Again, this is an ordinary differential equation in $t$, and is solved by $\hat{u}(\xi, t) = Ce^{\frac{i}{2^n}\abs{\xi}t}$. If we know the initial conditions of the system are $u(x, 0) = u_0(x)$ for some smooth and compactly supported function $u_0$, then
+\[
+	\hat{u}(\xi, t) = \hat{u_0}(\xi)e^{\frac{i}{2^n}\abs{\xi}t}.
+\]
+Then, we can recover our solution by $u(x, t) = u_0(x) \ast K(x, t)$ where
+\[
+	K(x, t) = \bp{\frac{1}{2\pi}}^n \int_{\R^n} e^{\frac{i}{2^n}\abs{\xi}t}e^{ix\cdot\xi}d\xi.
+\]
+But this integral just splits into the one dimensional case. We see
+\begin{align}
+	\notag
+	\bp{\frac{1}{2\pi}}^n\int_{\R^n}e^{\frac{i}{2^n}(\xi_1^2 + \ldots + \xi_n^2)t}&e^{i(x_1\xi_1 + \ldots + x_n\xi_n)}d\xi = \\
+	\notag &\bp{\frac{1}{2\pi}}^n\bp{\infint e^{\frac{i}{2}\xi_1^2t}e^{ix_1\xi_1}d\xi_1}\cdot\ldots\cdot\bp{\infint e^{\frac{i}{2}\xi_n^2t}e^{ix_n\xi_n}d\xi_n},
+\end{align}
+and each of these integrals is just the Schr{\"o}dinger equation in one dimension! We saw that when $t > 100$, 
+\[
+	K(x_j, t) = \frac{1}{2\pi} \infint e^{\frac{i}{2}\xi_j^2 t}e^{ix_j\xi_j}d\xi_j \approx \frac{e^{i\frac{\pi}{4}}}{\sqrt{\pi}}e^{-i\frac{x_j^2}{2t^2}}t^{-\frac{1}{2}}
+\]
+for each $j$. Then since $K(x, t)$ is just the product of the $K(x_j, t)$, we have
+\begin{equation}
+	K(x, t) = \prod_{j=1}^n K(x_j, t) \approx \frac{e^{i\frac{n\pi}{4}}}{\pi^\frac{n}{2}}e^{-i\frac{\abs{x}^2}{2t^2}}t^{-\frac{n}{2}}.
+\end{equation}
